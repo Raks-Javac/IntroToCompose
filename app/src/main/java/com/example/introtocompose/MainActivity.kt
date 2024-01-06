@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -47,13 +48,15 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+@Preview
 fun MyApp() {
+    var moneyCounter = remember {
+        mutableStateOf(0)
+    }
     Surface(
         //modifiers to modify widget properties
         modifier = Modifier
-            .fillMaxHeight()
-            .fillMaxWidth(),
-
+            .fillMaxSize(),
         color = MaterialTheme.colorScheme.primary
     ) {
         Column(
@@ -61,42 +64,42 @@ fun MyApp() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Tap", Modifier, style = TextStyle(
-                    color = Color.Black
+                text = "$ ${moneyCounter.value}", Modifier, style = TextStyle(
+                    color = Color.White
                 )
             )
             Spacer(modifier = Modifier.height(120.dp))
-            CircleShapeBox()
+            CircleShapeBox(moneyCounter= moneyCounter.value){
+                newvalue->    moneyCounter.value= newvalue;
+            }
         }
     }
 }
 
 // composable for the circle composable
-@Preview
 @Composable
-fun CircleShapeBox() {
-    var moneyCounter by remember {
-        mutableStateOf(0)
+fun CircleShapeBox(
+    moneyCounter: Int = 0,
+    updateCounter: (Int) -> Unit
+) {
 
-
-    }
 
     Card(
         modifier = Modifier
-            .size(150.dp)
-            .padding(3.dp)
+            .padding(3.dp).size(100.dp)
             .clickable {
-                Log.d("CircleTap", "Clicked")
-                moneyCounter += 1
-            },
+             updateCounter(moneyCounter+1)
+                       },
         shape = CircleShape,
+
     ) {
-        Box(
-            contentAlignment = Alignment.Center
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Tap $moneyCounter",
-                modifier = Modifier,
+                text = "Tap",
+                modifier = Modifier.padding(20.dp),
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
@@ -117,6 +120,7 @@ fun CircleShapeBox() {
 @Composable
 fun GreetingPreview() {
     IntroToComposeTheme {
+
 
     }
 }
