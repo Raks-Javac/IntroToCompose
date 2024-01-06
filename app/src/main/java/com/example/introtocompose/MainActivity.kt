@@ -86,10 +86,11 @@ fun CircleShapeBox(
 
     Card(
         modifier = Modifier
-            .padding(3.dp).size(100.dp)
+            .padding(3.dp)
+            .size(100.dp)
             .clickable {
-             updateCounter(moneyCounter+1)
-                       },
+                updateCounter(moneyCounter + 1)
+            },
         shape = CircleShape,
 
     ) {
